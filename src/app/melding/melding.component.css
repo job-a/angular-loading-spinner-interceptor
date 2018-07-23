@@ -1,0 +1,37 @@
+.dialoog {
+  position:fixed;
+  border-radius: 10px;
+  border-width: 5px;
+}
+
+.dialoog.fout {
+  border-color: red;
+  background-color: mistyrose;
+}
+
+.dialoog.waarschuwing {
+  border-color: goldenrod;
+  background-color: cornsilk;
+}
+
+.dialoog::backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(11, 11, 11, 0.77);
+}
+
+.dialoogtitel {
+  border-bottom: 1px solid black;
+}
+
+.dialoogbody {
+  font-size: large;
+  padding: 2em;
+}
+
+.dialoogsluitenknop {
+  float: right;
+}

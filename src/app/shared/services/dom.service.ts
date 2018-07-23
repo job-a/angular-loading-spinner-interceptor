@@ -1,0 +1,45 @@
+import {
+  Injectable,
+  Injector,
+  ComponentFactoryResolver,
+  EmbeddedViewRef,
+  ApplicationRef, ComponentRef, Type
+} from '@angular/core';
+
+
+/* Thanks to Carlos Roso @ medium.com for this implementation.
+ * https://medium.com/@caroso1222/angular-pro-tip-how-to-dynamically-create-components-in-body-ba200cc289e6 */
+@Injectable()
+export class DomService {
+
+  constructor(
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private appRef: ApplicationRef,
+    private injector: Injector
+  ) { }
+
+  appendComponentToBody<T>(component: Type<T>): ComponentRef<T> {
+    // 1. Create a component reference from the component
+    const componentRef = this.componentFactoryResolver
+      .resolveComponentFactory(component)
+      .create(this.injector);
+
+    // 2. Attach component to the appRef so that it's inside the ng component tree
+    this.appRef.attachView(componentRef.hostView);
+
+    // 3. Get DOM element from component
+    const domElem = (componentRef.hostView as EmbeddedViewRef<any>)
+      .rootNodes[0] as HTMLElement;
+
+    // 4. Append DOM element to the body
+    document.body.appendChild(domElem);
+
+    // 5. Return a reference to the component to the caller for further actions
+    return componentRef;
+  }
+
+  removeComponentFromBody(componentRef: ComponentRef<any>) {
+    this.appRef.detachView(componentRef.hostView);
+    componentRef.destroy();
+  }
+}
